@@ -19,7 +19,7 @@ function Dice({color, num}){
     const src = DICE_IMAGES[color][num - 1];
     const alt = `${color} ${num};`
     return (
-        <img src={src} alt={alt}/>
+        <img style={{width:"400px", height:"280px"}} src={src} alt={alt}/>
     )
 }
 
