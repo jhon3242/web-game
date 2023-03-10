@@ -1,25 +1,26 @@
-import diceWhite01 from "../asset/diceWhite01.svg"
-import diceBlack01 from "../asset/diceBlack01.svg"
-import diceWhite02 from "../asset/diceWhite02.svg"
-import diceBlack02 from "../asset/diceBlack02.svg"
-import diceWhite03 from "../asset/diceWhite03.svg"
-import diceBlack03 from "../asset/diceBlack03.svg"
-import diceWhite04 from "../asset/diceWhite04.svg"
-import diceBlack04 from "../asset/diceBlack04.svg"
-import diceWhite05 from "../asset/diceWhite05.svg"
-import diceBlack05 from "../asset/diceBlack05.svg"
-import diceWhite06 from "../asset/diceWhite06.svg"
-import diceBlack06 from "../asset/diceBlack06.svg"
+import diceBlue01 from "../asset/dice-blue-1.svg"
+import diceRed01 from "../asset/dice-red-1.svg"
+import diceBlue02 from "../asset/dice-blue-2.svg"
+import diceRed02 from "../asset/dice-red-2.svg"
+import diceBlue03 from "../asset/dice-blue-3.svg"
+import diceRed03 from "../asset/dice-red-3.svg"
+import diceBlue04 from "../asset/dice-blue-4.svg"
+import diceRed04 from "../asset/dice-red-4.svg"
+import diceBlue05 from "../asset/dice-blue-5.svg"
+import diceRed05 from "../asset/dice-red-5.svg"
+import diceBlue06 from "../asset/dice-blue-6.svg"
+import diceRed06 from "../asset/dice-red-6.svg"
+import "./Dice.css";
 
 const DICE_IMAGES = {
-    white : [diceWhite01, diceWhite02, diceWhite03, diceWhite04, diceWhite05, diceWhite06],
-    black : [diceBlack01, diceBlack02, diceBlack03, diceBlack04, diceBlack05, diceBlack06]
+    blue : [diceBlue01, diceBlue02, diceBlue03, diceBlue04,diceBlue05, diceBlue06],
+    red : [diceRed01, diceRed02, diceRed03, diceRed04, diceRed05, diceRed06]
 }
 function Dice({color, num}){
     const src = DICE_IMAGES[color][num - 1];
     const alt = `${color} ${num};`
     return (
-        <img style={{width:"400px", height:"280px"}} src={src} alt={alt}/>
+        <img className="Dice" src={src} alt={alt}/>
     )
 }
 

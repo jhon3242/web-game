@@ -1,6 +1,8 @@
-import Board from "./Borad";
+import Board from "./Board";
 import Buttion from "./Button";
 import {useState} from "react";
+import "./App.css"
+import Logo from "../asset/logo.png"
 
 function random(n) {
     return Math.ceil(Math.random() * n);
@@ -17,21 +19,28 @@ function App(){
         setOtherHistory([...otherHistory, nextOtherNum]);
     }
 
+
     const handleRollClear = () => {
         setMyHistory([]);
         setOtherHistory([]);
     }
 
-    return (
-        <>
-            <div>
-                <Buttion onClick={handleRollClick}>던지기</Buttion>
-                <Buttion onClick={handleRollClear}>처음부터</Buttion>
-            </div>
 
-            <Board name={"나"} color={"white"} history={myHistory} />
-            <Board name={"상대"} color={"black"} history={otherHistory} />
-        </>
+    return (
+        <div className="App">
+            <div>
+                <img className="App-logo" src={Logo} alt="주사위게임 로고"/>
+                <h1 className="App-title">주사위게임</h1>
+                <div>
+                    <Buttion className="Button blue App-button" onClick={handleRollClick}>던지기</Buttion>
+                    <Buttion className="Button red App-button" onClick={handleRollClear}>처음부터</Buttion>
+                </div>
+            </div>
+            <div className="App-boards">
+                <Board className="Board App-board" name={"나"} color={"blue"} history={myHistory} />
+                <Board className="Board App-board" name={"상대"} color={"red"} history={otherHistory} />
+            </div>
+        </div>
 )
 }
 

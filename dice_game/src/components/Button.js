@@ -1,6 +1,9 @@
-function Buttion({children, onClick}){
+import "./Button.css"
+
+function Buttion({children, onClick, className = ""}){
+    const classNames = `Button ${className}`;
     return (
-        <button onClick={onClick}>{children}</button>
+        <button className={classNames} onClick={onClick}>{children}</button>
     )
 }
 
