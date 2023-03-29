@@ -1,8 +1,46 @@
 import ReviewList from "./ReviewList";
-import items from "../mock.json"
+import getReviews from "../api";
+import {useEffect, useState} from "react";
+
+const LIMIT = 6;
+
 function App(){
+    const [items, setItems] = useState([]);
+    const [order, setOrder] = useState("id");
+    const [offset, setOffset] = useState(0);
+    const [hasNext, setHasNext] = useState(false);
+    const sortedItems = items.sort((a, b) => b[order] - a[order]);
+
+    const handleNewestClick = () => setOrder("createdAt");
+    const handleRatingClick = () => setOrder("rating");
+    const handleDelete = (id) => {
+        const nextItems = items.filter((item) => item.id !== id);
+        setItems(nextItems);
+    }
+    const handleLoad = async (option) => {
+        const { reviews, paging } = await getReviews(option);
+        if (option.offset === 0) {
+            setItems(reviews);
+        } else {
+            setItems([...items, ...reviews])
+        }
+        setHasNext(paging.hasNext);
+        setOffset(option.offset + reviews.length);
+    }
+
+    const handleLoadMore = () => {
+        handleLoad({order, offset, limit:LIMIT});
+    }
+
+    useEffect(() => {
+        handleLoad({order, offset:0, limit:LIMIT});
+    }, [order]);
+
     return (<>
-        <ReviewList items={items} />
+        <button onClick={handleNewestClick}>최신순</button>
+        <button onClick={handleRatingClick}>평점순</button>
+        <ReviewList items={sortedItems} onDelete={handleDelete} />
+        <button disabled={!hasNext} onClick={handleLoadMore}>더보기</button>
     </>);
 }
 
