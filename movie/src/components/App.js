@@ -4,11 +4,13 @@ import {useEffect, useState} from "react";
 
 const LIMIT = 6;
 
+
 function App(){
     const [items, setItems] = useState([]);
     const [order, setOrder] = useState("id");
     const [offset, setOffset] = useState(0);
     const [hasNext, setHasNext] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
     const handleNewestClick = () => setOrder("createdAt");
@@ -18,7 +20,16 @@ function App(){
         setItems(nextItems);
     }
     const handleLoad = async (option) => {
-        const { reviews, paging } = await getReviews(option);
+        let result;
+        try {
+            setIsLoading(true);
+            result = await getReviews(option);
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsLoading(false);
+        }
+        const { reviews, paging } = result;
         if (option.offset === 0) {
             setItems(reviews);
         } else {
@@ -40,7 +51,7 @@ function App(){
         <button onClick={handleNewestClick}>최신순</button>
         <button onClick={handleRatingClick}>평점순</button>
         <ReviewList items={sortedItems} onDelete={handleDelete} />
-        <button disabled={!hasNext} onClick={handleLoadMore}>더보기</button>
+        {hasNext &&  <button disabled={isLoading} onClick={handleLoadMore}>더보기</button>}
     </>);
 }
 
