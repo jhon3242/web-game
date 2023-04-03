@@ -30,3 +30,13 @@ export async function updateReviews(id, formData) {
     }
     return response.json();
 }
+
+export async function deleteReviews(id) {
+    const response = await fetch(`${BASE_URL}/${id}` ,{
+        method : "DELETE",
+    });
+    if (!response.ok) {
+        throw new Error("영화 리뷰를 수정하는데 실패했습니다.");
+    }
+    return response.json();
+}

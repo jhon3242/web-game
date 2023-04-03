@@ -1,5 +1,5 @@
 import ReviewList from "./ReviewList";
-import {getReviews, createReviews, updateReviews} from "../api";
+import {getReviews, createReviews, updateReviews, deleteReviews} from "../api";
 import {useEffect, useState} from "react";
 import ReviewForm from "./ReviewForm";
 import Test from "./test";
@@ -20,9 +20,10 @@ function App(){
 
     const handleNewestClick = () => setOrder("createdAt");
     const handleRatingClick = () => setOrder("rating");
-    const handleDelete = (id) => {
-        const nextItems = items.filter((item) => item.id !== id);
-        setItems(nextItems);
+    const handleDelete = async (id) => {
+        const result = await deleteReviews(id);
+        if (!result) return ;
+        setItems(prevState => prevState.filter((item) => item.id !== id));
     }
 
     // 리뷰를 items 에서 업데이트하는 함수
