@@ -1,5 +1,5 @@
 import ReviewList from "./ReviewList";
-import getReviews from "../api";
+import {getReviews, createReviews, updateReviews} from "../api";
 import {useEffect, useState} from "react";
 import ReviewForm from "./ReviewForm";
 import Test from "./test";
@@ -24,6 +24,18 @@ function App(){
         const nextItems = items.filter((item) => item.id !== id);
         setItems(nextItems);
     }
+
+    // 리뷰를 items 에서 업데이트하는 함수
+    const handleUpdateSuccess = (review) => {
+        setItems(prevState => {
+            const findIdx = items.findIndex(item => item.id === review.id);
+            return [
+                ...prevState.splice(0, findIdx),
+                review,
+                ...prevState.splice(findIdx + 1),
+            ]
+        })
+    }
     const handleLoad = async (option) => {
         let result;
         try {
@@ -36,6 +48,7 @@ function App(){
         } finally {
             setIsLoading(false);
         }
+
         const { reviews, paging } = result;
         if (option.offset === 0) {
             setItems(reviews);
@@ -50,6 +63,10 @@ function App(){
         handleLoad({order, offset, limit:LIMIT});
     }
 
+    const handleCreateSuccess = (review) => {
+        setItems((prevState) => [...prevState, review]);
+    }
+
     useEffect(() => {
         handleLoad({order, offset:0, limit:LIMIT});
     }, [order]);
@@ -57,8 +74,8 @@ function App(){
     return (<>
         <button onClick={handleNewestClick}>최신순</button>
         <button onClick={handleRatingClick}>평점순</button>
-        <ReviewForm />
-        <ReviewList items={sortedItems} onDelete={handleDelete} />
+        <ReviewForm onSubmit={createReviews} onSubmitSuccess={handleCreateSuccess} />
+        <ReviewList items={sortedItems} onDelete={handleDelete} onUpdate={updateReviews} onUpdateSuccess={handleUpdateSuccess} />
         {hasNext &&  <button disabled={isLoading} onClick={handleLoadMore}>더보기</button>}
         {loadingError?.message && <p>{loadingError.message}</p>}
     </>);

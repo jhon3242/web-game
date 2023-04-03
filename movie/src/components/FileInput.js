@@ -1,8 +1,8 @@
 import {useEffect, useRef, useState} from "react";
 
-function FileInput({name, value, onChange}) {
+function FileInput({name, value, onChange, initialPreview}) {
     const inputRef = useRef();
-    const [preview, setPreview] = useState();
+    const [preview, setPreview] = useState(initialPreview);
 
     const handleChange = (e) => {
         const nextValue = e.target.files[0];
@@ -22,15 +22,15 @@ function FileInput({name, value, onChange}) {
         const nextPreview = URL.createObjectURL(value);
         setPreview(nextPreview);
         return () => {
-            setPreview('');
+            setPreview(initialPreview);
             URL.revokeObjectURL(nextPreview);
         }
-    }, [value])
+    }, [value, initialPreview])
 
 
     return (
         <div>
-            {value && <img src={preview} alt={"이미지 미리보기"} />}
+            <img src={preview} alt={"이미지 미리보기"} />
             <input type={"file"} accept={"image/png, image/jpeg"} onChange={handleChange} ref={inputRef} />
             {value && <button onClick={handleClearClick}>X</button>}
         </div>
