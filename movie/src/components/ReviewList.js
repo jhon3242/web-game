@@ -2,6 +2,8 @@ import "./ReviewList.css";
 import Rating from "./Rating";
 import { useState } from "react";
 import ReviewForm from "./ReviewForm";
+import{useLocale} from "../contexts/localeContext";
+import useTranslate from "../hooks/useTranslate";
 
 function formatDate(value) {
   const date = new Date(value);
@@ -17,6 +19,9 @@ function ReviewListItem({ item, onDelete, onEdit }) {
     onEdit(item.id);
   };
 
+  const locale = useLocale();
+  const t = useTranslate();
+
   return (
     <div className="ReviewListItem">
       <img
@@ -29,21 +34,21 @@ function ReviewListItem({ item, onDelete, onEdit }) {
         <Rating value={item.rating} />
         <p>{formatDate(item.createdAt)}</p>
         <p>{item.content}</p>
-        <button onClick={handleDeleteClick}>삭제</button>
-        <button onClick={handleEditClick}>수정</button>
+        <p>현재언어 : {locale}</p>
+        <button onClick={handleDeleteClick}>{t("delete button")}</button>
+        <button onClick={handleEditClick}>{t("edit button")}</button>
       </div>
     </div>
   );
 }
 
-
 function ReviewList({ items, onDelete, onUpdate, onUpdateSuccess }) {
   const [editingId, setEditingId] = useState(null);
 
   const handleCancel = () => {
-      setEditingId(null);
-      debugger;
-  }
+    setEditingId(null);
+    debugger;
+  };
 
   return (
     <ul>
@@ -55,9 +60,9 @@ function ReviewList({ items, onDelete, onUpdate, onUpdateSuccess }) {
           const handleSubmit = (formData) => onUpdate(id, formData);
 
           const handleSubmitSuccess = (review) => {
-              onUpdateSuccess(review)
-              setEditingId(null);
-          }
+            onUpdateSuccess(review);
+            setEditingId(null);
+          };
 
           return (
             <li key={item.id}>
